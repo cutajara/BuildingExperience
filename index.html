@@ -261,54 +261,65 @@
         }
 
         /* --- About Section --- */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8rem;
-            align-items: start;
-        }
-
-        .about-story {
-            font-family: var(--font-serif);
-            font-size: 2rem;
-            line-height: 1.4;
-            color: var(--color-black);
-        }
-
-        .about-details p {
-            margin-bottom: 2rem;
+        .about-summary p {
+            font-size: 1.25rem;
+            max-width: 900px;
+            color: var(--color-dark-gray);
+            line-height: 1.8;
+            font-weight: 300;
         }
 
         /* --- Services Section --- */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2px;
-            background-color: var(--color-border);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
         }
 
         .service-card {
             background-color: var(--color-white);
-            padding: 4rem 3rem;
+            padding: 2.5rem 2rem;
+            border: 1px solid var(--color-border);
             transition: var(--transition);
+            display: flex;
+            flex-direction: column;
         }
 
         .service-card:hover {
-            background-color: var(--color-light-gray);
-        }
-
-        .service-num {
-            font-family: var(--font-serif);
-            font-size: 1.5rem;
-            font-style: italic;
-            color: var(--color-mid-gray);
-            margin-bottom: 2.5rem;
-            display: block;
+            border-color: var(--color-black);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            transform: translateY(-3px);
         }
 
         .service-card h3 {
-            font-size: 1.75rem;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .service-card p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .service-icon {
+            width: 48px;
+            height: 48px;
             margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-light-gray);
+            border-radius: 4px;
+        }
+
+        .service-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--color-black);
+            stroke-width: 1.5;
+            fill: none;
+            filter: none;
         }
 
         /* --- Gallery / Portfolio Section --- */
@@ -440,6 +451,33 @@
             display: none;
         }
 
+        .btn[type="submit"] {
+            position: relative;
+        }
+
+        .btn[type="submit"]:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .btn[type="submit"].loading::after {
+            content: '';
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            border-top-color: currentColor;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: translateY(-50%) rotate(360deg); }
+        }
+
         /* --- Footer --- */
         footer {
             background-color: var(--color-black);
@@ -491,8 +529,7 @@
             .section-padding { padding: 6rem 0; }
             .hero-title { font-size: 3.5rem; }
             .section-title { font-size: 2.75rem; }
-            .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 4rem; }
-            .services-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; gap: 4rem; }
             .footer-grid { grid-template-columns: 1fr 1fr; gap: 3rem; }
         }
 
@@ -504,9 +541,41 @@
                 display: flex;
             }
             .hero-grid { grid-template-columns: 1fr; }
-            .hero-content { padding-right: 0; padding-bottom: 4rem; }
+            .hero-content { 
+                padding-right: 0; 
+                padding-bottom: 4rem;
+                color: var(--color-white);
+                position: relative;
+                z-index: 10;
+            }
+            .hero-title {
+                color: var(--color-white);
+            }
+            .hero-subtitle {
+                color: var(--color-white);
+            }
+            .hero-content .btn-solid {
+                background-color: var(--color-white);
+                color: var(--color-black);
+            }
+            .hero-content .btn-solid:hover {
+                background-color: transparent;
+                color: var(--color-white);
+                border-color: var(--color-white);
+            }
             .hero-image-wrapper { display: none; }
-            #hero { height: auto; min-height: 80vh; }
+            #hero { 
+                height: auto; 
+                min-height: 100vh;
+                background-image: linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, 0.65)), 
+                                  url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80');
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-attachment: scroll;
+                display: flex;
+                align-items: center;
+            }
             .gallery-grid { grid-template-columns: 1fr; gap: 3rem; }
         }
 
@@ -537,8 +606,8 @@
                     <span></span>
                 </button>
                 <ul class="nav-links" id="navLinks">
-                    <li><a href="#about">Purpose</a></li>
-                    <li><a href="#services">Expertise</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
                     <li><a href="#portfolio">Works</a></li>
                     <li><a href="#contact">Enquiries</a></li>
                 </ul>
@@ -566,17 +635,11 @@
         <section id="about" class="section-padding">
             <div class="container">
                 <div class="section-title-wrapper">
-                    <span class="section-tag">01 / Purpose</span>
+                    <span class="section-tag">01 / About</span>
                     <h2 class="section-title">Built on absolute professionalism.</h2>
                 </div>
-                <div class="about-grid">
-                    <div class="about-story">
-                        We believe that commercial structures should embody modern luxury while maintaining uncompromised functionality.
-                    </div>
-                    <div class="about-details">
-                        <p>Operating exclusively on the Sunshine Coast, Building Experience targets small commercial transformations that demand strict oversight and premium aesthetics. From boutique fashion retail flagships to high-caliber executive boardrooms, our execution stands apart.</p>
-                        <p>Our collaborative ethos ensures transparency at every sequence of development. We align seamlessly with architectural developers and proactive business operators to construct interiors that advance commercial reputation.</p>
-                    </div>
+                <div class="about-summary">
+                    <p>Building Experience is a premier commercial construction and fit-out company based on the Sunshine Coast. With a relentless focus on high-end execution and modern architectural design, we specialize in transforming commercial properties into functional, visually striking environments. From boutique retail stores to high-caliber executive boardrooms, our dedicated team partners closely with developers and business operators to construct interiors that elevate your commercial reputation.</p>
                 </div>
             </div>
         </section>
@@ -584,24 +647,51 @@
         <section id="services" class="section-padding">
             <div class="container">
                 <div class="section-title-wrapper">
-                    <span class="section-tag">02 / Expertise</span>
-                    <h2 class="section-title">Tailored building sectors.</h2>
+                    <span class="section-tag">02 / Services</span>
+                    <h2 class="section-title">Our Services</h2>
                 </div>
                 <div class="services-grid">
                     <div class="service-card">
-                        <span class="service-num">I</span>
-                        <h3>Boutique Shop Fit-Outs</h3>
-                        <p>Complete custom interiors optimized for luxury retail experiences, high-end hospitality venues, and architectural commercial spaces.</p>
+                        <div class="service-icon">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3H21V7H3V3M3 9H21V21H3V9M5 11V19H9V11H5M11 11V19H15V11H11M17 11V19H19V11H17Z" fill="currentColor" stroke="none"/></svg>
+                        </div>
+                        <h3>Boutique Fit-Outs</h3>
+                        <p>Complete custom interiors optimized for luxury retail experiences, high-end hospitality venues, and distinct commercial spaces.</p>
                     </div>
                     <div class="service-card">
-                        <span class="service-num">II</span>
+                        <div class="service-icon">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.5 1C11.5 0.45 11.95 0 12.5 0C13.05 0 13.5 0.45 13.5 1V3H16L19 6H21C22.1 6 23 6.9 23 8V19C23 20.1 22.1 21 21 21H3C1.9 21 1 20.1 1 19V8C1 6.9 1.9 6 3 6H5L8 3H10.5V1M14 9H10V13H6V17H14V13H18V9H14Z" fill="currentColor" stroke="none"/></svg>
+                        </div>
                         <h3>Commercial Alterations</h3>
                         <p>Structural realignments, facade updates, and interior modifications designed to upscale existing corporate architectural frameworks.</p>
                     </div>
                     <div class="service-card">
-                        <span class="service-num">III</span>
+                        <div class="service-icon">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 1C9 0.45 9.45 0 10 0H14C14.55 0 15 0.45 15 1V2H18C18.55 2 19 2.45 19 3V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V3C5 2.45 5.45 2 6 2H9V1M7 5V19H17V5H7M9 7H15V9H9V7M9 11H15V13H9V11M9 15H15V17H9V15Z" fill="currentColor" stroke="none"/></svg>
+                        </div>
                         <h3>Project Management</h3>
                         <p>Seamless execution from site analysis and material acquisition through handover, guaranteeing rigid compliance with modern engineering guidelines.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M1 3H23V5H1V3M1 7H23V9H1V7M3 11H21C21.55 11 22 11.45 22 12V21C22 21.55 21.55 22 21 22H3C2.45 22 2 21.55 2 21V12C2 11.45 2.45 11 3 11M4 13V20H20V13H4M6 15H8V18H6V15M10 15H12V18H10V15M14 15H16V18H14V15M18 15H20V18H18V15Z" fill="currentColor" stroke="none"/></svg>
+                        </div>
+                        <h3>Office Renovations</h3>
+                        <p>Modernizing corporate workspaces to enhance productivity, optimize floor plans, and improve overall aesthetic appeal.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 2C4.89 2 4 2.9 4 4V20C4 21.1 4.89 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2H6M6 4H13V9H18V20H6V4M8 11H16V12H8V11M8 13H16V14H8V13M8 15H16V16H8V15M8 17H16V18H8V17Z" fill="currentColor" stroke="none"/></svg>
+                        </div>
+                        <h3>Design & Construct</h3>
+                        <p>End-to-end building solutions that marry your unique architectural vision with practical, budget-conscious construction methods.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.43 12.98C19.47 12.66 19.5 12.34 19.5 12C19.5 11.66 19.47 11.34 19.43 11.02L21.49 9.37C21.73 9.22 21.73 8.95 21.59 8.77L19.54 5.74C19.4 5.56 19.13 5.5 18.92 5.64L16.56 7.58C16.04 7.18 15.48 6.84 14.87 6.6L14.49 4.05C14.46 3.85 14.3 3.7 14.11 3.7H10.89C10.7 3.7 10.54 3.85 10.51 4.05L10.13 6.6C9.52 6.84 8.96 7.18 8.44 7.58L6.08 5.64C5.87 5.5 5.6 5.56 5.46 5.74L3.41 8.77C3.27 8.95 3.27 9.22 3.51 9.37L5.57 11.02C5.53 11.34 5.5 11.67 5.5 12C5.5 12.33 5.53 12.66 5.57 12.98L3.51 14.63C3.27 14.78 3.27 15.05 3.41 15.23L5.46 18.26C5.6 18.44 5.87 18.5 6.08 18.36L8.44 16.42C8.96 16.82 9.52 17.16 10.13 17.4L10.51 19.95C10.54 20.15 10.7 20.3 10.89 20.3H14.11C14.3 20.3 14.46 20.15 14.49 19.95L14.87 17.4C15.48 17.16 16.04 16.82 16.56 16.42L18.92 18.36C19.13 18.5 19.4 18.44 19.54 18.26L21.59 15.23C21.73 15.05 21.73 14.78 21.49 14.63L19.43 12.98M12 15.5C10.57 15.5 9.5 14.43 9.5 13C9.5 11.57 10.57 10.5 12 10.5C13.43 10.5 14.5 11.57 14.5 13C14.5 14.43 13.43 15.5 12 15.5Z" fill="currentColor" stroke="none"/></svg>
+                        </div>
+                        <h3>Defit & Make Good</h3>
+                        <p>Returning commercial leases to their original state efficiently and professionally, ensuring seamless transitions between tenants.</p>
                     </div>
                 </div>
             </div>
@@ -643,15 +733,14 @@
                     <h2 class="section-title">Let's discuss your project</h2>
                 </div>
                 <div class="contact-grid">
-                    <div class="contact-info">
-                        <p>We accept a constrained quantity of commissions concurrently to ensure precise dedication to execution quality.</p>
+                    <div class="contact-info">                       
                         <div class="contact-method">
                             <span class="contact-label">General Info</span>
                             <span class="contact-value">hello@buildingexperience.com.au</span>
                         </div>
                         <div class="contact-method">
                             <span class="contact-label">Telephone</span>
-                            <span class="contact-value">+61 (0) 7 5400 0000</span>
+                            <a href="tel:+61754000000" class="contact-value">+61 (0) 7 5400 0000</a>
                         </div>
                     </div>
                     <div>
@@ -693,14 +782,14 @@
         <div class="container">
             <div class="footer-grid">
                 <div>
-                    <h4 style="font-family: var(--font-serif); font-size: 1.5rem; letter-spacing: -0.01em; margin-bottom: 1rem;">Building Experience.</h4>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.5rem; letter-spacing: -0.01em; margin-bottom: 1rem;">Building Experience</h4>
                     <p>Premium Commercial Construction & Shop Fit-outs based on the Sunshine Coast, QLD.</p>
                 </div>
                 <div>
                     <h4>Navigation</h4>
                     <ul class="footer-links">
-                        <li><a href="#about">Purpose</a></li>
-                        <li><a href="#services">Expertise</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
                         <li><a href="#portfolio">Works</a></li>
                         <li><a href="#contact">Enquiries</a></li>
                     </ul>
@@ -740,6 +829,24 @@
                 link.addEventListener('click', () => {
                     navLinks.classList.remove('active');
                 });
+            });
+
+            // Form submission loading state
+            const form = document.querySelector('.netlify-form');
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+
+            form.addEventListener('submit', (e) => {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('loading');
+                submitBtn.textContent = 'Sending...';
+                
+                // Reset after 3 seconds (Netlify form will redirect on success)
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                    submitBtn.textContent = originalText;
+                }, 3000);
             });
         });
     </script>

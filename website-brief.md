@@ -16,6 +16,8 @@ Use this document as the full brief for building a static website. Follow it exa
 
 Take influence from this website: https://orchardpiper.com/
 
+Most users to interact with the websit via mobile. Make sure for optimal mobile presentation that still presents well on desktop
+
 ## 2. Technical Requirements
 
 - Output as a **single static HTML file** (`index.html`), with CSS and JS inline or in the same file unless told otherwise.
