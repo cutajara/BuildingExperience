@@ -1,0 +1,11 @@
+{
+  "app": "python app.py",
+  "watch": {
+    "include": ["**/*.py"],
+    "exclude": ["README.md", "cdk*.json", "**/*.d.ts", "**/*.js"]
+  },
+  "context": {
+    "@aws-cdk/core:enableStackNameDuplicates": "true",
+    "aws-cdk:enableDiffNoFail": "true"
+  }
+}

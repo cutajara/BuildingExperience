@@ -745,8 +745,8 @@
                         </div>
                     </div>
                     <div>
-                        <form name="building-experience-contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" class="netlify-form">
-                            <input type="hidden" name="form-name" value="building-experience-contact" />
+                        <form name="building-experience-contact" class="aws-form" data-api-url="https://YOUR_API_ID.execute-api.ap-southeast-2.amazonaws.com/prod/contact">
+                            <input type="hidden" name="source" value="website" />
                             <p class="hidden-field">
                                 <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
                             </p>
@@ -772,6 +772,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-solid">Submit Brief</button>
+                            <p class="form-status" aria-live="polite" style="margin-top: 1rem; min-height: 1.5rem; color: var(--color-dark-gray);"></p>
                         </form>
                     </div>
                 </div>
@@ -832,22 +833,64 @@
                 });
             });
 
-            // Form submission loading state
-            const form = document.querySelector('.netlify-form');
+            const form = document.querySelector('.aws-form');
             const submitBtn = form.querySelector('button[type="submit"]');
+            const statusBox = form.querySelector('.form-status');
             const originalText = submitBtn.textContent;
+            const apiUrl = form.dataset.apiUrl || 'https://YOUR_API_ID.execute-api.ap-southeast-2.amazonaws.com/prod/contact';
 
-            form.addEventListener('submit', (e) => {
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const formData = new FormData(form);
+                const botField = formData.get('bot-field');
+
+                if (botField && botField.toString().trim() !== '') {
+                    statusBox.textContent = 'Submission rejected.';
+                    statusBox.style.color = '#b33a3a';
+                    return;
+                }
+
+                const payload = {
+                    name: formData.get('name')?.toString().trim() || '',
+                    email: formData.get('email')?.toString().trim() || '',
+                    phone: formData.get('phone')?.toString().trim() || '',
+                    message: formData.get('message')?.toString().trim() || '',
+                    source: formData.get('source')?.toString().trim() || 'website'
+                };
+
                 submitBtn.disabled = true;
                 submitBtn.classList.add('loading');
                 submitBtn.textContent = 'Sending...';
-                
-                // Reset after 3 seconds (Netlify form will redirect on success)
-                setTimeout(() => {
+                statusBox.textContent = '';
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const responseData = await response.json().catch(() => ({}));
+
+                    if (!response.ok) {
+                        throw new Error(responseData.message || 'Unable to send your enquiry right now.');
+                    }
+
+                    statusBox.textContent = responseData.message || 'Thank you. Your enquiry has been sent successfully.';
+                    statusBox.style.color = '#1f6f4d';
+                    form.reset();
+                } catch (error) {
+                    statusBox.textContent = error.message || 'Something went wrong. Please try again later.';
+                    statusBox.style.color = '#b33a3a';
+                } finally {
                     submitBtn.disabled = false;
                     submitBtn.classList.remove('loading');
                     submitBtn.textContent = originalText;
-                }, 3000);
+                }
             });
         });
     </script>
