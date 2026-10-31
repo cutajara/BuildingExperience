@@ -548,7 +548,7 @@
                 position: relative;
                 z-index: 10;
             }
-            .hero-title {
+                        .hero-title {
                 color: var(--color-white);
             }
             .hero-subtitle {
@@ -568,7 +568,7 @@
             #hero { 
                 height: auto; 
                 min-height: 100vh;
-                background-image: linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, 0.65)), 
+                                background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1)), 
                                   url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80');
                 background-position: center;
                 background-size: cover;
@@ -609,7 +609,7 @@
                 <ul class="nav-links" id="navLinks">
                     <li><a href="#about">About</a></li>
                     <li><a href="#services">Services</a></li>
-                    <li><a href="#portfolio">Works</a></li>
+                    <!--<li><a href="#portfolio">Works</a></li>-->
                     <li><a href="#contact">Enquiries</a></li>
                 </ul>
             </nav>
@@ -626,9 +626,6 @@
                     <h1 class="hero-title">Refining commercial spaces.</h1>
                     <p class="hero-subtitle">High-end architecture meets master craftsmanship. We deliver premium structural transformations and bespoke shop fit-outs on the Sunshine Coast.</p>
                     <a href="#contact" class="btn btn-solid">Initiate Brief</a>
-                </div>
-                <div class="hero-image-wrapper">
-                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="Minimalist architectural commercial build" class="hero-img">
                 </div>
             </div>
         </section>
@@ -697,7 +694,7 @@
                 </div>
             </div>
         </section>
-
+        <!--
         <section id="portfolio" class="section-padding">
             <div class="container">
                 <div class="section-title-wrapper">
@@ -726,11 +723,11 @@
                 </div>
             </div>
         </section>
-
+        -->
         <section id="contact" class="section-padding">
             <div class="container">
                 <div class="section-title-wrapper">
-                    <span class="section-tag">04 / Enquiries</span>
+                    <span class="section-tag">03 / Enquiries</span>
                     <h2 class="section-title">Let's discuss your project</h2>
                 </div>
                 <div class="contact-grid">
@@ -745,8 +742,8 @@
                         </div>
                     </div>
                     <div>
-                        <form name="building-experience-contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" class="netlify-form">
-                            <input type="hidden" name="form-name" value="building-experience-contact" />
+                        <form id="contactForm" class="contact-form netlify-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+                            <input type="hidden" name="form-name" value="contact" />
                             <p class="hidden-field">
                                 <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
                             </p>
