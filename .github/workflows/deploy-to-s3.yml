@@ -1,4 +1,4 @@
-name: Deploy index.html to S3
+name: Deploy site to S3
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
       - dev
     paths:
       - index.html
+      - '*.png'
       - .github/workflows/deploy-to-s3.yml
   workflow_dispatch:
 
@@ -26,8 +27,18 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Upload index.html
+      # Preview site only: keep search engines from indexing it (prod is on Netlify)
+      - name: Add noindex to preview
+        run: |
+          sed -i 's|<meta name="viewport"|<meta name="robots" content="noindex, nofollow">\n    &|' index.html
+          grep -q 'name="robots" content="noindex' index.html
+
+      - name: Upload site files
         env:
           S3_BUCKET: ${{ vars.AWS_S3_BUCKET }}
           AWS_REGION: ${{ vars.AWS_REGION }}
-        run: aws s3 cp index.html "s3://${S3_BUCKET}/index.html" --region "${AWS_REGION}" --content-type "text/html"
+        run: |
+          aws s3 sync . "s3://${S3_BUCKET}/" --region "${AWS_REGION}" \
+            --exclude "*" \
+            --include "index.html" \
+            --include "*.png"
